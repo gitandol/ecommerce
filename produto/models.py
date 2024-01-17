@@ -1,6 +1,10 @@
 from django.db import models
-from base.functions.image.resize import resize_image
+from base.functions.image.resize import crop_image
 from django.utils.text import slugify
+import os
+from django.conf import settings
+from PIL import Image
+from django.forms import ValidationError
 
 
 class Produto(models.Model):
@@ -19,7 +23,7 @@ class Produto(models.Model):
     descricao_curta = models.TextField(max_length=255)
     descricao_longa = models.TextField(max_length=2500)
     imagem = models.ImageField(upload_to='produto_imagens/%Y/%m/', blank=True, null=True)
-    slug = models.SlugField(unique=True, null=True, blank=True)
+    slug = models.SlugField(unique=True, null=True, blank=True, max_length=255)
     preco_marketing = models.FloatField(verbose_name='Preço')
     preco_marketing_promocional = models.FloatField(verbose_name='Preço Promo.')
     tipo = models.CharField(default='V', max_length=1, choices=CHOICE_TIPO)
@@ -31,7 +35,6 @@ class Produto(models.Model):
     def get_preco_promocional_formatado(self):
         return f'R$ {self.preco_marketing_promocional:.2f}'.replace('.', ',')
     get_preco_promocional_formatado.short_description = 'Preço Promo.'
-
 
     def __str__(self):
         return self.nome
@@ -48,11 +51,9 @@ class Produto(models.Model):
             self.slug = slug
             super().save(*args, **kwargs)
 
-        max_image_size = 800
-
         if self.imagem:
-            status = resize_image(img=self.imagem, new_width=max_image_size)
-            print(f'Imagem Redimencionada: {status}')
+            crop_image(img=self.imagem)  # corta imagem para ficar com mesmo width e hight
+
 
 
 class Variacao(models.Model):
