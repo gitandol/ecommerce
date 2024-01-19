@@ -1,0 +1,6 @@
+{% load manipula_dados %}
+<option
+    data-preco="{{ variacao.preco|formata_moeda }}"
+    data-preco-promocional="{{ variacao.preco_promocional|formata_moeda }}"
+    value="{{ variacao.id }}"> {{ variacao }}
+</option>

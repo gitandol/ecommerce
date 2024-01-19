@@ -1,13 +1,11 @@
 from django.db import models
 from base.functions.image.resize import crop_image
 from django.utils.text import slugify
-import os
-from django.conf import settings
-from PIL import Image
-from django.forms import ValidationError
+from base.utils import moeda
+from base.models import BaseModel
 
 
-class Produto(models.Model):
+class Produto(BaseModel):
     class Meta:
         db_table = "produto"
         verbose_name = 'Produto'
@@ -29,11 +27,11 @@ class Produto(models.Model):
     tipo = models.CharField(default='V', max_length=1, choices=CHOICE_TIPO)
 
     def get_preco_formatado(self):
-        return f'R$ {self.preco_marketing:.2f}'.replace('.', ',')
+        return moeda.formata(self.preco_marketing)
     get_preco_formatado.short_description = 'Preço'
 
     def get_preco_promocional_formatado(self):
-        return f'R$ {self.preco_marketing_promocional:.2f}'.replace('.', ',')
+        return moeda.formata(self.preco_marketing_promocional)
     get_preco_promocional_formatado.short_description = 'Preço Promo.'
 
     def __str__(self):
@@ -55,19 +53,19 @@ class Produto(models.Model):
             crop_image(img=self.imagem)  # corta imagem para ficar com mesmo width e hight
 
 
-
-class Variacao(models.Model):
+class Variacao(BaseModel):
     class Meta:
         db_table = "variacao"
         verbose_name = 'Variação'
         verbose_name_plural = 'Variações'
-        ordering = ["nome"]
+        ordering = ["ordem", "nome"]
 
     produto = models.ForeignKey(Produto, on_delete=models.CASCADE)  # ao deletar o produto, delata as variações
     nome = models.CharField(max_length=100, blank=True, null=True)
     preco = models.FloatField()
     preco_promocional = models.FloatField(default=0)
     estoque = models.PositiveIntegerField(default=1)
+    ordem = models.IntegerField(default=0)
 
     def __str__(self):
         return self.nome or self.produto.nome

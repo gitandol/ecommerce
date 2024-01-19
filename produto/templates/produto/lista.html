@@ -2,6 +2,10 @@
 {% load static %}
 {% load manipula_dados %}
 {% block conteudo %}
+    <div class="text-center">
+        <h2 class="section-heading text-uppercase">Produtos</h2>
+        <h3 class="section-subheading"></h3>
+    </div>
     {% for produto in produtos %}
         <div class="col-lg-4 col-sm-6 mb-4">
             <div class="portfolio-item">
@@ -24,7 +28,7 @@
                             <span class="text">{{ produto.preco_marketing|formata_moeda }}</span>
                         {% endif %}
                     </div>
-                    <a href="#" class="btn btn-primary btn-md text-uppercase">Comprar</a>
+                    <a href="{{ produto.slug }}" class="btn btn-primary btn-md text-uppercase">Comprar</a>
                 </div>
             </div>
         </div>

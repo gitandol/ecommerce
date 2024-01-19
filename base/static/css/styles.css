@@ -11324,3 +11324,10 @@ section#contact form#contactForm :-ms-input-placeholder {
     width: 30vw;
     object-fit: cover;
 }
+
+
+.div-flex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

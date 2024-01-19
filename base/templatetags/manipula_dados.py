@@ -1,5 +1,5 @@
 from django.template import Library
-from ..utils import moeda
+from base.utils import moeda
 
 register = Library()
 
