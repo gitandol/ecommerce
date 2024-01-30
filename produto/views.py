@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
@@ -14,6 +15,19 @@ class ListaProdutos(ListView):
     context_object_name = 'produtos'
     paginate_by = 6
     extra_context = {"home": True}
+
+    def get_queryset(self):
+        name = self.request.GET.get('search', '')
+        object_list = self.model.objects.all()
+        if name:
+            object_list = object_list.filter(
+                Q(
+                    Q(nome__icontains=name) |
+                    Q(descricao_longa__icontains=name) |
+                    Q(descricao_curta__icontains=name)
+                )
+            )
+        return object_list
 
 
 class DetalheProduto(DetailView):
