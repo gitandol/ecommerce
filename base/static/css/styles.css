@@ -11331,3 +11331,7 @@ section#contact form#contactForm :-ms-input-placeholder {
     align-items: center;
     justify-content: center;
 }
+
+.aling-right{
+    text-align: right;
+}

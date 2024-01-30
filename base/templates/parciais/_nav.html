@@ -1,15 +1,31 @@
 <!-- Navigation-->
+{% load manipula_dados %}
 {% load static %}
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
     <div class="container">
-        <a class="navbar-brand" href="/">INICIO</a>
+        <a class="navbar-brand" href="{% url 'produto:lista' %}">INICIO</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             Menu
             <i class="fas fa-bars ms-1"></i>
         </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
-                <li class="nav-item"><a class="nav-link" href="#portfolio">Produtos</a></li>
+        <div>
+            <ul class="navbar-nav mr-auto">
+                {% if request.session.carrinho %}
+                <li class="nav-item">
+                    <a class="nav-link nav-cart-link active" href="{% url 'produto:carrinho' %}">
+                        <span class="nav-cart-text mr-1">
+                            Carrinho
+                        </span>
+                        <span class="nav-cart-count mr-1">
+                            <strong>{{ request.session.carrinho|total_itens_carrinho }}x</strong>
+                        </span>
+                        <span class="nav-cart-icon mr-2">
+                            <i class="fas fa-shopping-cart"></i>
+                        </span>
+                    </a>
+                </li>
+                {% endif %}
+                <li class="nav-item"><a class="nav-link" href="{% url 'produto:lista' %}">Produtos</a></li>
             </ul>
         </div>
     </div>

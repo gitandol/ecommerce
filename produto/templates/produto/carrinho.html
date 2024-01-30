@@ -2,5 +2,88 @@
 {% load static %}
 {% load manipula_dados %}
 {% block conteudo %}
-    {{ request.session.carrinho }}
+    {% if request.session.carrinho %}
+       <div class="row mt-3">
+            <div class="col">
+                <h3>Carrinho de compras</h3>
+                <p class="lead">Os produtos, quantidades e preços que você escolheu.</p>
+
+                <div class="table-responsive">
+                    <table class="table">
+                        <tr>
+                            <th class="d-none d-lg-block">Imagem</th>
+                            <th>Produto</th>
+                            <th>V.</th>
+                            <th class="aling-right">QTD.</th>
+                            <th class="aling-right">Total</th>
+                        </tr>
+
+                        {% for item in request.session.carrinho.values %}
+                            <tr>
+                                <td class="d-none d-lg-block">
+                                    <img class="cart-img" src="{{ item.imagem }}" width="100px" height="100px">
+                                </td>
+                                <td>
+                                    <a style="text-decoration:none;" href="{% url 'produto:detalhe' item.slug %}">{{ item.produto_nome }}</a>
+                                    <a class="px-3" href="{% url 'produto:removerdocarrinho' %}?vid={{ item.variacao_id }}">
+                                        <i class="fas fa-times-circle text-danger" aria-hidden="true"></i>
+                                    </a>
+                                </td>
+                                <td>{{ item.variacao_nome }}</td>
+                                <td class="aling-right">
+                                    {{ item.quantidade }}x
+                                    {% if item.preco_unitario_promocional %}
+                                        {{ item.preco_unitario_promocional|formata_moeda }}
+                                    {% else %}
+                                        {{ item.preco_unitario|formata_moeda }}
+                                    {% endif %}
+                                </td>
+
+                                {% if item.preco_quantitativo_promocional %}
+                                    <td class="aling-right">{{ item.preco_quantitativo_promocional|formata_moeda }}</td>
+                                {% else %}
+                                    <td class="aling-right">{{ item.preco_quantitativo|formata_moeda }}</td>
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+
+
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="row mt-3">
+            <div class="col-lg">
+                <p class='lead'>Total no carrinho</p>
+
+                <div class='table-responsive'>
+                    <table class="table">
+                        <tr>
+                            <td class="font-weight-bold">Total</td>
+                            <td class="aling-right">{{ request.session.carrinho|valor_itens_carrinho|formata_moeda }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-lg mt-auto">
+                <a class="btn btn-lg btn-block btn-primary" href="#" style="width: 100%;">
+                    Finalizar a compra
+                </a>
+            </div>
+        </div>
+{% else %}
+
+<div class="row mt-3">
+    <div class="col">
+        <h3>Carrinho vazio</h3>
+        <p class="lead">Não há produtos no seu carrinho</p>
+    </div>
+</div>
+{% endif %}
+
 {% endblock %}
