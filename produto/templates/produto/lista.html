@@ -21,7 +21,7 @@
                     <div class="portfolio-caption-heading">{{ produto.nome }}</div>
                     <div class="row product-price">
                         {% if produto.preco_marketing_promocional %}
-                            <span class="text-muted">{{ produto.preco_marketing|formata_moeda }}</span>
+                            <span class="text-muted-line">{{ produto.preco_marketing|formata_moeda }}</span>
                             <span class="text">{{ produto.preco_marketing_promocional|formata_moeda }}</span>
                         {% else %}
                             <span class="text">&nbsp;</span>

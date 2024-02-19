@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="pt-BR">
+<head>{% include 'parciais/_head.html' %}</head>
 <body id="page-top">
 {% include 'parciais/_nav.html' %}
 {% if home %}
@@ -15,12 +16,9 @@
         </div>
         <div class="div-flex">
             {% include 'parciais/_pagination.html' %}
-        <div>
+        </div>
     </div>
 </section>
 {% include 'parciais/_footer.html' %}
 </body>
-<head>
-        {% include 'parciais/_head.html' %}
-    </head>
 </html>
