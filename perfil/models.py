@@ -3,9 +3,10 @@ from django.contrib.auth.models import User
 from django.forms import ValidationError
 from base.functions.cpf import valida_cpf
 import re
+from base.models import BaseModel
 
 
-class Perfil(models.Model):
+class Perfil(BaseModel):
     class Meta:
         db_table = "perfil"
         verbose_name = 'Perfil'
@@ -14,7 +15,7 @@ class Perfil(models.Model):
 
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     dt_nascimento = models.DateField()
-    cpf = models.CharField(max_length=11)
+    cpf = models.CharField(max_length=14)
 
     def __str__(self):
         desc = []
@@ -35,7 +36,7 @@ class Perfil(models.Model):
             raise ValidationError(error_messages)
 
 
-class Endereco(models.Model):
+class Endereco(BaseModel):
     # TODO: https://servicodados.ibge.gov.br/api/docs/localidades alterar para dados IBGE
     CHOICE_ESTADO = [
         ('AC', 'Acre'),
